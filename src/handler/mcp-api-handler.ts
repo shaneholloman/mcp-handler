@@ -870,6 +870,11 @@ function createFakeIncomingMessage(
   req.method = method;
   req.url = url;
   req.headers = headers;
+  req.rawHeaders = Object.entries(headers).flatMap(([key, value]) => 
+    Array.isArray(value) 
+      ? value.flatMap(v => [key, v]) 
+      : [key, value ?? ""]
+  );
 
   const auth = options.auth || getAuthContext();
   if (auth) {
